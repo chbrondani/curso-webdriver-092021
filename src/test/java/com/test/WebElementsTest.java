@@ -115,4 +115,34 @@ public class WebElementsTest {
 		selectSingle.selectByVisibleText("Item 7");
 		assertEquals("Item 7", selectSingle.getFirstSelectedOption().getText());
 	}
+
+	//DropDown List Multi Select: Selecionar o item 5, item 8 e item 9 simultaneamente validando que os 3 valores estão selecionados
+	@Test
+	public void testValidateMultiSelect() throws InterruptedException {
+		WebElement dropMulti = driver.findElement(By.name("multiselectdropdown"));
+		Select selectMulti = new Select(dropMulti);
+
+		selectMulti.selectByVisibleText("Item 5");
+		selectMulti.selectByVisibleText("Item 8");
+		selectMulti.selectByVisibleText("Item 9");
+
+		//valida se a lista tem 3 elementos selecionados
+		assertEquals("Deveriam ter 3 elementos!", 3, selectMulti.getAllSelectedOptions().size());
+
+		assertEquals("Item 5", selectMulti.getAllSelectedOptions().get(0).getText()); //pega o texto da posição 0 da lista
+		assertEquals("Item 8", selectMulti.getAllSelectedOptions().get(1).getText());
+		assertEquals("Item 9", selectMulti.getAllSelectedOptions().get(2).getText());
+
+		Thread.sleep(3000);
+		
+		//deseleciona o item 8
+		selectMulti.deselectByVisibleText("Item 8");
+		assertEquals("Deveriam ter 2 elementos!", 2, selectMulti.getAllSelectedOptions().size());
+
+		//o item 9 era terceiro na lista, depois de deselecionar o item 8, a lista é refeita e assim o item 9 ficou em segundo
+		assertEquals("Item 5", selectMulti.getAllSelectedOptions().get(0).getText());
+		assertEquals("Item 9", selectMulti.getAllSelectedOptions().get(1).getText());
+
+	}
+
 }
