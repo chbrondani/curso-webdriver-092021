@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class WebElementsTest {
 	private WebDriver driver;
@@ -51,6 +52,7 @@ public class WebElementsTest {
 	}
 
 	//EXERCÍCIOS
+	//http://antoniotrindade.com.br/treinoautomacao/elementsweb.html
 	//RadioButton: Clique na opção 3 e valide que está ok
 	@Test
 	public void testValidateRadioButton() throws InterruptedException {
@@ -98,5 +100,19 @@ public class WebElementsTest {
 		assertTrue("Posição 4 deveria estar selecionada!", listChecks.get(3).isSelected());
 		assertFalse("Posição 1 não deveria estar selecionada!", listChecks.get(0).isSelected());
 		assertFalse("Posição 2 não deveria estar selecionada!", listChecks.get(1).isSelected());
+	}
+
+	//DropDown List Single: Selecionar o 7º elemento da lista e valide que está selecionado
+	@Test
+	public void testValidateSingleSelect() {
+		WebElement dropSingle = driver.findElement(By.name("dropdownlist"));
+		Select selectSingle = new Select (dropSingle);
+
+		//seleciona o primeiro elemento, depois o sétimo (o primeiro não fica mais selecionado, por isso o teste passou)
+		selectSingle.selectByIndex(0);
+		assertEquals("Item 1", selectSingle.getFirstSelectedOption().getText());
+
+		selectSingle.selectByVisibleText("Item 7");
+		assertEquals("Item 7", selectSingle.getFirstSelectedOption().getText());
 	}
 }
