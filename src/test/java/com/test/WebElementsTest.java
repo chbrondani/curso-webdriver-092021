@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -142,7 +143,58 @@ public class WebElementsTest {
 		//o item 9 era terceiro na lista, depois de deselecionar o item 8, a lista é refeita e assim o item 9 ficou em segundo
 		assertEquals("Item 5", selectMulti.getAllSelectedOptions().get(0).getText());
 		assertEquals("Item 9", selectMulti.getAllSelectedOptions().get(1).getText());
-
+	}
+	
+	//iFrames: escreva seu nome no campo de pesquisa do site da TargetTrust e valide o resultado esperado
+	@Test
+	public void testValidateIFrames() throws InterruptedException {
+		//Acessar iframe do site da Target
+		driver.switchTo().frame("iframe_b");
+		
+		Thread.sleep(5000);
+		
+		//aceitar os cookies
+		WebElement btnAllow = driver.findElement(By.cssSelector("a.cc-btn.cc-ALLOW"));
+		//btnAllow.click();
+		//assertTrue(btnAllow.isDisplayed());
+		
+		driver.switchTo().defaultContent();
+		
+		//Acessar iframe do site do Selenium
+		driver.switchTo().frame("iframe_d");
+		
+		//clicar no menu
+		WebElement btnMenu = driver.findElement(By.cssSelector("nav > button"));
+		btnMenu.click();
+		
+		Thread.sleep(5000);
+		
+		//identifica elemento de texto, esreve o nome e valida o resultado
+		WebElement tfSelenium = driver.findElement(By.cssSelector("#main_navbar > div > span > input"));
+		tfSelenium.sendKeys("Antonio");
+		assertEquals("Antonio", tfSelenium.getAttribute("value"));
+	}
+	
+	//Popups: Alerts, Confirm, Prompt. Faça as validações nos 3 botões existentes na pagina de WebElements
+	@Test
+	public void testValidateAlerts() throws InterruptedException {
+		WebElement btnAlert = driver.findElement(By.name("alertbtn"));
+		btnAlert.click();
+		
+		Alert alert = driver.switchTo().alert();
+		assertEquals("Eu sou um alerta!", alert.getText());
+	
+		Thread.sleep(5000);
+		alert.accept();
+		
+		WebElement btnConfirm = driver.findElement(By.name("confirmbtn"));
+		btnConfirm.click();
+		
+		Alert alert2 = driver.switchTo().alert();
+		assertEquals("Pressione um botão!", alert2.getText());
+		
+		Thread.sleep(5000);
+		alert2.dismiss();
 	}
 
 }
