@@ -3,6 +3,7 @@ package com.test;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +23,7 @@ public class WebElementsTest {
 		System.setProperty("webdriver.chrome.driver", 
 				"/home/voalle/Downloads/ChromeDriver/chromedriver");
 		driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);//Espera tudo estar carregado na página para fazer uma ação
 		driver.get("http://antoniotrindade.com.br/treinoautomacao/elementsweb.html");
 	}
 
@@ -135,7 +137,7 @@ public class WebElementsTest {
 		assertEquals("Item 9", selectMulti.getAllSelectedOptions().get(2).getText());
 
 		Thread.sleep(3000);
-		
+
 		//deseleciona o item 8
 		selectMulti.deselectByVisibleText("Item 8");
 		assertEquals("Deveriam ter 2 elementos!", 2, selectMulti.getAllSelectedOptions().size());
@@ -144,57 +146,57 @@ public class WebElementsTest {
 		assertEquals("Item 5", selectMulti.getAllSelectedOptions().get(0).getText());
 		assertEquals("Item 9", selectMulti.getAllSelectedOptions().get(1).getText());
 	}
-	
+
 	//iFrames: escreva seu nome no campo de pesquisa do site da TargetTrust e valide o resultado esperado
 	@Test
 	public void testValidateIFrames() throws InterruptedException {
 		//Acessar iframe do site da Target
 		driver.switchTo().frame("iframe_b");
-		
+
 		Thread.sleep(5000);
-		
+
 		//aceitar os cookies
-		WebElement btnAllow = driver.findElement(By.cssSelector("a.cc-btn.cc-ALLOW"));
-		//btnAllow.click();
-		//assertTrue(btnAllow.isDisplayed());
-		
+		WebElement btnAllow = driver.findElement(By.cssSelector(".cc-color-override-1444386161 > div > a.cc-btn.cc-ALLOW"));
+		assertTrue(btnAllow.isDisplayed());
+		btnAllow.click();
+
+
 		driver.switchTo().defaultContent();
-		
+
 		//Acessar iframe do site do Selenium
 		driver.switchTo().frame("iframe_d");
-		
+
 		//clicar no menu
 		WebElement btnMenu = driver.findElement(By.cssSelector("nav > button"));
 		btnMenu.click();
-		
+
 		Thread.sleep(5000);
-		
+
 		//identifica elemento de texto, esreve o nome e valida o resultado
 		WebElement tfSelenium = driver.findElement(By.cssSelector("#main_navbar > div > span > input"));
 		tfSelenium.sendKeys("Antonio");
 		assertEquals("Antonio", tfSelenium.getAttribute("value"));
 	}
-	
+
 	//Popups: Alerts, Confirm, Prompt. Faça as validações nos 3 botões existentes na pagina de WebElements
 	@Test
 	public void testValidateAlerts() throws InterruptedException {
 		WebElement btnAlert = driver.findElement(By.name("alertbtn"));
 		btnAlert.click();
-		
+
 		Alert alert = driver.switchTo().alert();
 		assertEquals("Eu sou um alerta!", alert.getText());
-	
+
 		Thread.sleep(5000);
 		alert.accept();
-		
+
 		WebElement btnConfirm = driver.findElement(By.name("confirmbtn"));
 		btnConfirm.click();
-		
+
 		Alert alert2 = driver.switchTo().alert();
 		assertEquals("Pressione um botão!", alert2.getText());
-		
+
 		Thread.sleep(5000);
 		alert2.dismiss();
 	}
-
 }
