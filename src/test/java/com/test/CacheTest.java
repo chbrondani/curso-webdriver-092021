@@ -7,10 +7,14 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.inter.NegativeInterface;
+import com.inter.PositiveInterface;
 
 public class CacheTest {
 	private WebDriver driver;
@@ -31,6 +35,7 @@ public class CacheTest {
 
 	//EXERCÍCIO: Navegar no browser, back e forward
 	@Test
+	@Category({PositiveInterface.class, NegativeInterface.class})//classificado como positivo e negativo ao mesmo tempo
 	public void testNavigationCache() {
 		WebElement btnCalculadora = driver.findElement(By.linkText("Calculadora"));
 		btnCalculadora.click();//Clica na aba Calculadora

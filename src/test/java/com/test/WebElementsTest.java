@@ -7,7 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +18,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import com.inter.NegativeInterface;
+import com.inter.PositiveInterface;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING) //roda os testes na ordem alfabética
 public class WebElementsTest {
 	private WebDriver driver;
 
@@ -32,6 +39,7 @@ public class WebElementsTest {
 		driver.quit();
 	}
 
+	@Category(PositiveInterface.class)
 	@Test
 	public void testValidationName() throws InterruptedException {
 		WebElement textFieldBox1 = driver.findElement(By.name("txtbox1"));
@@ -45,6 +53,7 @@ public class WebElementsTest {
 
 	//Shift + Alt + L = já transforma em WebElement
 
+	@Category(PositiveInterface.class)
 	@Test
 	public void testValidateTextFieldsDisabled() {
 		WebElement textFieldBox1 = driver.findElement(By.name("txtbox1"));
@@ -57,6 +66,7 @@ public class WebElementsTest {
 	//EXERCÍCIOS
 	//http://antoniotrindade.com.br/treinoautomacao/elementsweb.html
 	//RadioButton: Clique na opção 3 e valide que está ok
+	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateRadioButton() throws InterruptedException {
 		List<WebElement> radios = driver.findElements(By.name("radioGroup1"));
@@ -83,6 +93,7 @@ public class WebElementsTest {
 	}
 
 	//CheckBox: Clique na opção 3 e na 4 e valide que está ok
+	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateCheckBox() throws InterruptedException {
 		List<WebElement> listChecks = driver.findElements(By.name("chkbox"));
@@ -106,6 +117,7 @@ public class WebElementsTest {
 	}
 
 	//DropDown List Single: Selecionar o 7º elemento da lista e valide que está selecionado
+	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateSingleSelect() {
 		WebElement dropSingle = driver.findElement(By.name("dropdownlist"));
@@ -120,6 +132,7 @@ public class WebElementsTest {
 	}
 
 	//DropDown List Multi Select: Selecionar o item 5, item 8 e item 9 simultaneamente validando que os 3 valores estão selecionados
+	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateMultiSelect() throws InterruptedException {
 		WebElement dropMulti = driver.findElement(By.name("multiselectdropdown"));
@@ -148,6 +161,8 @@ public class WebElementsTest {
 	}
 
 	//iFrames: escreva seu nome no campo de pesquisa do site da TargetTrust e valide o resultado esperado
+	//@Ignore("Desabilitado teste devido ao bug...") serve para ignorar algum teste
+	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateIFrames() throws InterruptedException {
 		//Acessar iframe do site da Target
