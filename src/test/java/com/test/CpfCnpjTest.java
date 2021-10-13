@@ -11,6 +11,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CpfCnpjTest {
 	private WebDriver driver;
@@ -74,9 +77,8 @@ public class CpfCnpjTest {
 		WebElement btnGenerateCnpj = driver.findElement(By.id("bt_gerar_cnpj"));
 		btnGenerateCnpj.click();
 
-		Thread.sleep(1000);
-
 		WebElement labelCnpj = driver.findElement(By.id("texto_cnpj"));
+
 		String cnpj = labelCnpj.getText();
 		System.out.println(cnpj);
 
@@ -95,7 +97,9 @@ public class CpfCnpjTest {
 		WebElement btnGenerateCnpj = driver.findElement(By.id("bt_gerar_cnpj"));
 		btnGenerateCnpj.click();
 
-		Thread.sleep(1000);
+		//espera explícita
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.invisibilityOfElementWithText(By.id("texto_cnpj"), "Gerando..."));
 
 		WebElement labelCnpj = driver.findElement(By.id("texto_cnpj"));
 		String cnpj = labelCnpj.getText();
