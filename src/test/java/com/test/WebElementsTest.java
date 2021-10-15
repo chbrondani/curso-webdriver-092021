@@ -1,11 +1,10 @@
 package com.test;
 
 import static org.junit.Assert.*;
+import static com.core.DriverFactory.getDriver;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -13,36 +12,26 @@ import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import com.core.BaseTest;
 import com.inter.NegativeInterface;
 import com.inter.PositiveInterface;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING) //roda os testes na ordem alfabética
-public class WebElementsTest {
-	private WebDriver driver;
+public class WebElementsTest extends BaseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", 
-				"/home/voalle/Downloads/ChromeDriver/chromedriver");
-		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);//Espera tudo estar carregado na página para fazer uma ação
-		driver.get("http://antoniotrindade.com.br/treinoautomacao/elementsweb.html");
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		driver.quit();
+		
+		getDriver().get("http://antoniotrindade.com.br/treinoautomacao/elementsweb.html");
 	}
 
 	@Category(PositiveInterface.class)
 	@Test
 	public void testValidationName() throws InterruptedException {
-		WebElement textFieldBox1 = driver.findElement(By.name("txtbox1"));
+		WebElement textFieldBox1 = getDriver().findElement(By.name("txtbox1"));
 
 		textFieldBox1.sendKeys("Antonio");
 
@@ -56,8 +45,8 @@ public class WebElementsTest {
 	@Category(PositiveInterface.class)
 	@Test
 	public void testValidateTextFieldsDisabled() {
-		WebElement textFieldBox1 = driver.findElement(By.name("txtbox1"));
-		WebElement textFieldBox2 = driver.findElement(By.name("txtbox2"));
+		WebElement textFieldBox1 = getDriver().findElement(By.name("txtbox1"));
+		WebElement textFieldBox2 = getDriver().findElement(By.name("txtbox2"));
 
 		assertTrue(textFieldBox1.isEnabled());
 		assertFalse(textFieldBox2.isEnabled());
@@ -69,7 +58,7 @@ public class WebElementsTest {
 	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateRadioButton() throws InterruptedException {
-		List<WebElement> radios = driver.findElements(By.name("radioGroup1"));
+		List<WebElement> radios = getDriver().findElements(By.name("radioGroup1"));
 
 		//clicar no elemento 3 da lista
 		//radios.get(2).click(); 
@@ -96,7 +85,7 @@ public class WebElementsTest {
 	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateCheckBox() throws InterruptedException {
-		List<WebElement> listChecks = driver.findElements(By.name("chkbox"));
+		List<WebElement> listChecks = getDriver().findElements(By.name("chkbox"));
 
 		//validar tamanho da lista
 		assertEquals("Tamanho deveria ser 4!", 4, listChecks.size());
@@ -120,7 +109,7 @@ public class WebElementsTest {
 	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateSingleSelect() {
-		WebElement dropSingle = driver.findElement(By.name("dropdownlist"));
+		WebElement dropSingle = getDriver().findElement(By.name("dropdownlist"));
 		Select selectSingle = new Select (dropSingle);
 
 		//seleciona o primeiro elemento, depois o sétimo (o primeiro não fica mais selecionado, por isso o teste passou)
@@ -135,7 +124,7 @@ public class WebElementsTest {
 	@Category(NegativeInterface.class)
 	@Test
 	public void testValidateMultiSelect() throws InterruptedException {
-		WebElement dropMulti = driver.findElement(By.name("multiselectdropdown"));
+		WebElement dropMulti = getDriver().findElement(By.name("multiselectdropdown"));
 		Select selectMulti = new Select(dropMulti);
 
 		selectMulti.selectByVisibleText("Item 5");
@@ -166,29 +155,29 @@ public class WebElementsTest {
 	@Test
 	public void testValidateIFrames() throws InterruptedException {
 		//Acessar iframe do site da Target
-		driver.switchTo().frame("iframe_b");
+		getDriver().switchTo().frame("iframe_b");
 
 		Thread.sleep(5000);
 
 		//aceitar os cookies
-		WebElement btnAllow = driver.findElement(By.cssSelector(".cc-color-override-1444386161 > div > a.cc-btn.cc-ALLOW"));
+		WebElement btnAllow = getDriver().findElement(By.cssSelector(".cc-color-override-1444386161 > div > a.cc-btn.cc-ALLOW"));
 		assertTrue(btnAllow.isDisplayed());
 		btnAllow.click();
 
 
-		driver.switchTo().defaultContent();
+		getDriver().switchTo().defaultContent();
 
 		//Acessar iframe do site do Selenium
-		driver.switchTo().frame("iframe_d");
+		getDriver().switchTo().frame("iframe_d");
 
 		//clicar no menu
-		WebElement btnMenu = driver.findElement(By.cssSelector("nav > button"));
+		WebElement btnMenu = getDriver().findElement(By.cssSelector("nav > button"));
 		btnMenu.click();
 
 		Thread.sleep(5000);
 
 		//identifica elemento de texto, esreve o nome e valida o resultado
-		WebElement tfSelenium = driver.findElement(By.cssSelector("#main_navbar > div > span > input"));
+		WebElement tfSelenium = getDriver().findElement(By.cssSelector("#main_navbar > div > span > input"));
 		tfSelenium.sendKeys("Antonio");
 		assertEquals("Antonio", tfSelenium.getAttribute("value"));
 	}
@@ -196,19 +185,19 @@ public class WebElementsTest {
 	//Popups: Alerts, Confirm, Prompt. Faça as validações nos 3 botões existentes na pagina de WebElements
 	@Test
 	public void testValidateAlerts() throws InterruptedException {
-		WebElement btnAlert = driver.findElement(By.name("alertbtn"));
+		WebElement btnAlert = getDriver().findElement(By.name("alertbtn"));
 		btnAlert.click();
 
-		Alert alert = driver.switchTo().alert();
+		Alert alert = getDriver().switchTo().alert();
 		assertEquals("Eu sou um alerta!", alert.getText());
 
 		Thread.sleep(5000);
 		alert.accept();
 
-		WebElement btnConfirm = driver.findElement(By.name("confirmbtn"));
+		WebElement btnConfirm = getDriver().findElement(By.name("confirmbtn"));
 		btnConfirm.click();
 
-		Alert alert2 = driver.switchTo().alert();
+		Alert alert2 = getDriver().switchTo().alert();
 		assertEquals("Pressione um botão!", alert2.getText());
 
 		Thread.sleep(5000);
