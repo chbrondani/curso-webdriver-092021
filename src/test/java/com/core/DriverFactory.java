@@ -12,7 +12,7 @@ public class DriverFactory {
 	public static WebDriver getDriver() {
 		if(driver == null) {
 			System.setProperty("webdriver.chrome.driver", 
-					"/home/voalle/Downloads/ChromeDriver/chromedriver");
+					GlobalProperty.getProperty("webdriver.path") + "chromedriver");
 			driver = new ChromeDriver();
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);//Espera tudo estar carregado na página para fazer uma ação
 		}
