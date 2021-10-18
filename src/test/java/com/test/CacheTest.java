@@ -1,63 +1,48 @@
 package com.test;
 
+import static com.core.DriverFactory.getDriver;
 import static org.junit.Assert.assertEquals;
 
-import java.util.concurrent.TimeUnit;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
+import com.core.BaseTest;
 import com.inter.NegativeInterface;
 import com.inter.PositiveInterface;
 
-public class CacheTest {
-	private WebDriver driver;
+public class CacheTest extends BaseTest{
 
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", 
-				"/home/voalle/Downloads/ChromeDriver/chromedriver");
-		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);//Espera tudo estar carregado na página para fazer uma ação
-		driver.get("http://antoniotrindade.com.br/treinoautomacao");
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		driver.quit();
+		getDriver().get("http://antoniotrindade.com.br/treinoautomacao");
 	}
 
 	//EXERCÍCIO: Navegar no browser, back e forward
 	@Test
 	@Category({PositiveInterface.class, NegativeInterface.class})//classificado como positivo e negativo ao mesmo tempo
 	public void testNavigationCache() {
-		WebElement btnCalculadora = driver.findElement(By.linkText("Calculadora"));
+		WebElement btnCalculadora = getDriver().findElement(By.linkText("Calculadora"));
 		btnCalculadora.click();//Clica na aba Calculadora
-		assertEquals("Desafio Automação Cálculos", driver.getTitle());//Valida se está na aba Calculadora
+		assertEquals("Desafio Automação Cálculos", getDriver().getTitle());//Valida se está na aba Calculadora
 
-		WebElement btnTable = driver.findElement(By.linkText("Localizar Table"));
+		WebElement btnTable = getDriver().findElement(By.linkText("Localizar Table"));
 		btnTable.click();//Clica na aba Localizar Table
-		assertEquals("Trabalhando com tables", driver.getTitle());//Valida se está na aba Localizar Table
+		assertEquals("Trabalhando com tables", getDriver().getTitle());//Valida se está na aba Localizar Table
 
-		driver.navigate().back();//voltar
-		assertEquals("Desafio Automação Cálculos", driver.getTitle());//Valida se está na aba Calculadora
+		getDriver().navigate().back();//voltar
+		assertEquals("Desafio Automação Cálculos", getDriver().getTitle());//Valida se está na aba Calculadora
 
-		driver.navigate().back();//voltar
-		assertEquals("Treino Automação de Testes", driver.getTitle());//Valida se está na Home
+		getDriver().navigate().back();//voltar
+		assertEquals("Treino Automação de Testes", getDriver().getTitle());//Valida se está na Home
 
-		driver.navigate().forward();//avançar
-		assertEquals("Desafio Automação Cálculos", driver.getTitle());//Valida se está na aba Calculadora
+		getDriver().navigate().forward();//avançar
+		assertEquals("Desafio Automação Cálculos", getDriver().getTitle());//Valida se está na aba Calculadora
 
-		driver.navigate().forward();//avançar
-		assertEquals("Trabalhando com tables", driver.getTitle());//Valida se está na aba Localizar Table
-
-
+		getDriver().navigate().forward();//avançar
+		assertEquals("Trabalhando com tables", getDriver().getTitle());//Valida se está na aba Localizar Table
 	}
 
 }

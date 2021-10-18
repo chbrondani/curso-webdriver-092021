@@ -1,46 +1,34 @@
 package com.test;
 
+import static com.core.DriverFactory.getDriver;
 import static org.junit.Assert.assertEquals;
 
-import java.util.concurrent.TimeUnit;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CalcTest {
+import com.core.BaseTest;
 
-	private WebDriver driver;
+public class CalcTest extends BaseTest {
+
 	private WebElement tfNumber1;
 	private WebElement tfNumber2;
 	private WebElement tfTotal;
 
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", 
-				"/home/voalle/Downloads/ChromeDriver/chromedriver");
-		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);//Espera tudo estar carregado na página para fazer uma ação
-		driver.get("http://antoniotrindade.com.br/treinoautomacao/desafiosoma.html");
+		getDriver().get("http://antoniotrindade.com.br/treinoautomacao/desafiosoma.html");
 
 		mapWebElements();
 	}
 
 	private void mapWebElements() {		
-		tfNumber1 = driver.findElement(By.id("number1"));
-		tfNumber2 = driver.findElement(By.id("number2"));
-		tfTotal = driver.findElement(By.id("total"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		driver.quit();
+		tfNumber1 = getDriver().findElement(By.id("number1"));
+		tfNumber2 = getDriver().findElement(By.id("number2"));
+		tfTotal = getDriver().findElement(By.id("total"));
 	}
 
 	@Test
@@ -49,14 +37,14 @@ public class CalcTest {
 		Float val2 = 5.4f;
 		Float vlTotal = val1 + val2;
 
-		WebElement btnSum = driver.findElement(By.id("somar"));
+		WebElement btnSum = getDriver().findElement(By.id("somar"));
 
 		tfNumber1.sendKeys(Float.toString(val1));//converter float para string
 		tfNumber2.sendKeys(Float.toString(val2));//converter float para string
 
 		btnSum.click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 10);
 		wait.until(ExpectedConditions.textToBePresentInElementValue(tfTotal, String.valueOf(vlTotal)));
 
 		assertEquals(String.valueOf(vlTotal), tfTotal.getAttribute("value"));//converter floar para string
@@ -69,14 +57,14 @@ public class CalcTest {
 
 		Float vlTotal = val1 - val2;
 
-		WebElement btnSub = driver.findElement(By.id("subtrair"));
+		WebElement btnSub = getDriver().findElement(By.id("subtrair"));
 
 		tfNumber1.sendKeys(Float.toString(val1));//converter float para string
 		tfNumber2.sendKeys(Float.toString(val2));//converter float para string
 
 		btnSub.click();
 
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 10);
 		wait.until(ExpectedConditions.textToBePresentInElementValue(tfTotal, String.valueOf(vlTotal)));
 
 		assertEquals(String.valueOf(vlTotal), tfTotal.getAttribute("value"));//converter floar para string
